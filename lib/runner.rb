@@ -32,3 +32,7 @@ def run_with_robot robot, input
     end
   end
 end
+
+def run input=STDIN
+  run_with_robot(Robot.new(Table.new(5,5)), input)
+end

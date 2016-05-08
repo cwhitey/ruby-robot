@@ -37,4 +37,29 @@ describe Robot do
       expect(clumsy_robot.left).to eq :south
     end
   end
+
+  describe "#move" do
+    it "moves forward in one direction" do
+      # Move north one step
+      clumsy_robot.move
+      expect(clumsy_robot.placement[:coordinate]).to eq Coordinate.new(0, 1)
+      clumsy_robot.move
+      expect(clumsy_robot.placement[:coordinate]).to eq Coordinate.new(0, 2)
+    end
+
+    it "moves after direction has changed" do
+      clumsy_robot.right
+      # Move east
+      clumsy_robot.move
+      expect(clumsy_robot.placement[:coordinate]).to eq Coordinate.new(1, 0)
+    end
+
+    it "doesn't move off the table" do
+      clumsy_robot.right
+      clumsy_robot.right
+      # Try to move south (off the table)
+      clumsy_robot.move
+      expect(clumsy_robot.placement[:coordinate]).to eq Coordinate.new(0, 0)
+    end
+  end
 end

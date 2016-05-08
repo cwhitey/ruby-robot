@@ -27,4 +27,27 @@ class Robot
     mapping = @@left_map[@placement[:dir]]
     @placement[:dir] = mapping if mapping
   end
+
+  
+  def move
+    new_place = move_prep
+    @placement = new_place if @table.on_top? new_place[:coordinate]
+  end
+  
+  private
+
+  def move_prep
+    coord = @placement[:coordinate]
+    dir = @placement[:dir]
+    case dir
+    when :north
+      Placement.new(Coordinate.new(coord[:x], coord[:y] + 1), dir)
+    when :east
+      Placement.new(Coordinate.new(coord[:x] + 1, coord[:y]), dir)
+    when :south
+      Placement.new(Coordinate.new(coord[:x], coord[:y] - 1), dir)
+    when :west
+      Placement.new(Coordinate.new(coord[:x] - 1, coord[:y]), dir)
+    end
+  end
 end

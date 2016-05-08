@@ -25,4 +25,82 @@ describe "run instructions on robot" do
       end
     end
   end
+
+  
+  # Acceptance tests
+  let(:example_a) { (
+%q{PLACE 0,0,NORTH
+MOVE
+REPORT}) }
+  let(:example_a_result) { "0,1,NORTH" }
+  
+  let(:example_b) {
+%q{PLACE 0,0,NORTH
+LEFT
+REPORT} }
+  let(:example_b_result) { "0,0,WEST" }
+  
+  let(:example_c) {
+%q{PLACE 1,2,EAST
+MOVE
+MOVE
+LEFT
+MOVE
+REPORT} }
+  let(:example_c_result) { "3,3,NORTH" }
+
+  let(:extra_a) {
+%q{MOVE
+MOVE
+LEFT
+MOVE
+REPORT
+PLACE 1,2,EAST
+MOVE
+MOVE
+LEFT
+MOVE
+REPORT} }
+
+  describe "#run_with_robot" do
+    context "acceptance tests" do
+      describe "example_a" do
+        it "returns documented result" do
+          s = (StringIO.new << example_a)
+          s.rewind
+          output = with_captured_stdout { run_with_robot robot, s}.strip
+          expect(output).to eq example_a_result
+        end
+      end
+      
+      describe "example_b" do
+        it "returns documented result" do
+          s = (StringIO.new << example_b)
+          s.rewind
+          output = with_captured_stdout { run_with_robot robot, s}.strip
+          expect(output).to eq example_b_result
+        end
+      end
+      
+      describe "example_c" do
+        it "returns documented result" do
+          s = (StringIO.new << example_c)
+          s.rewind
+          output = with_captured_stdout { run_with_robot robot, s}.strip
+          expect(output).to eq example_c_result
+        end
+      end
+    end
+
+    context "no instructions are run before PLACE is found" do
+      describe "extra_a" do
+        it "returns same result as example_c" do
+          s = (StringIO.new << extra_a)
+          s.rewind
+          output = with_captured_stdout { run_with_robot robot, s}.strip
+          expect(output).to eq example_c_result
+        end
+      end
+    end
+  end
 end

@@ -28,10 +28,14 @@ class Robot
     @placement[:dir] = mapping if mapping
   end
 
-  
   def move
     new_place = move_prep
     @placement = new_place if @table.on_top? new_place[:coordinate]
+  end
+
+  def report
+    coord = @placement[:coordinate]
+    puts "#{coord[:x]},#{coord[:y]},#{@placement[:dir].to_s.upcase}"
   end
   
   private

@@ -62,4 +62,26 @@ describe Robot do
       expect(clumsy_robot.placement[:coordinate]).to eq Coordinate.new(0, 0)
     end
   end
+  
+  describe "#report" do
+    context "default initialized robot" do
+      it "outputs report" do
+        output = with_captured_stdout { clumsy_robot.report }.strip
+        expect(output).to eq "0,0,NORTH"
+      end
+    end
+
+    context "adventurous robot" do
+      it "outputs accurate report" do
+        clumsy_robot.right
+        clumsy_robot.move
+        output = with_captured_stdout { clumsy_robot.report }.strip
+        expect(output).to eq "1,0,EAST"
+        clumsy_robot.left
+        clumsy_robot.move
+        output = with_captured_stdout { clumsy_robot.report }.strip
+        expect(output).to eq "1,1,NORTH"
+      end
+    end
+  end
 end
